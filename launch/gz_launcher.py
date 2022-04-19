@@ -27,7 +27,7 @@ def generate_launch_description():
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
    
   # Set the path to this package.
-  pkg_share = FindPackageShare(package='basics').find('basics')
+  pkg_share = FindPackageShare(package='plansys2-hospital-cavros').find('plansys2-hospital-cavros')
  
   # Set the path to the world file
   world_file_name = 'hospital.world'

@@ -27,7 +27,7 @@ def generate_launch_description():
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
    
   # Set the path to this package.
-  pkg_share = FindPackageShare(package='basics').find('basics')
+  pkg_share = FindPackageShare(package='plansys2-hospital-cavros').find('plansys2-hospital-cavros')
  
   # Set the path to the world file
   world_file_name = 'hospital.world'
@@ -36,6 +36,13 @@ def generate_launch_description():
   # Set the path to the SDF model files.
   gazebo_models_path = os.path.join(pkg_share, 'models')
   os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
+
+  tiago_gazebo_dir =  FindPackageShare(package='tiago_gazebo').find('tiago_gazebo')   
+  tiago_sim_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(tiago_gazebo_dir, 'launch', 'tiago_gazebo.launch.py')),
+        launch_arguments={
+          'world_name': world_file_name
+        }.items())
  
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
   # Launch configuration variables specific to simulation
@@ -85,6 +92,7 @@ def generate_launch_description():
   ld.add_action(declare_use_sim_time_cmd)
   ld.add_action(declare_use_simulator_cmd)
   ld.add_action(declare_world_cmd)
+  ld.add_action(tiago_sim_cmd)
  
   # Add any actions
   ld.add_action(start_gazebo_server_cmd)

@@ -1,83 +1,80 @@
 (define (problem move-probl)
 (:domain project)
 (:objects 
-    Room1 Room2 Room3 Room4 Room5 Room6 Room7 Room8 Room9 - room
-    Corridor1 Corridor2 Corridor3 - corridor
-    door1 door2 door3 door4 door5 door6 door7 - door
-    zone1 zone2 zone3 zone4 zone5 - zone
-    elevator - elevator
+    main s1 s2 z1 z2 z3 z4 g1 g2 g3 g4 g5 o1 o2 o3 o4 b1 b2 w1 - room
+    corr1 corr2 corr3 - corridor
     object - object
     hand - gripper
-    wall_E - robot
+    tiago - robot
 )
 (:init 
     ;; Initial state
-    (robot_at wall_E Room3)
-    (gripper_at hand wall_E)
-    (gripper_free hand)
-    (open None)
-    (object_at object zone2)
+    (robot_at tiago main)
+    (gripper_at hand tiago)
+    (gripper_free hand)    
+    (object_at object w1)
 
     ;; Doors
-    (close door1)
-    (close door2)
-    (close door3)
-    (close door4)
-    (close door5)
-    (close door6)
-    (close door7)
-
-    ;; Zones - Rooms
-    (in Room1 zone1)
-    (in Room1 zone2)
-    (in Room2 zone3)
-    (in Room2 zone4)
-    (in Room2 zone5)
-
-    (in zone1 Room1)
-    (in zone2 Room1)
-    (in zone3 Room2)
-    (in zone4 Room2)
-    (in zone5 Room2)
+    (open None)
 
     ;; Connections between every location
-    ;; -- 1st Floor
-    (connected Corridor1 Room2 None)
-    (connected Room2 Corridor1 None)
-    (connected Room2 Room4 None)
-    (connected Room4 Room2 None)
+    ;; ;; MAIN
+    (connected main corr1 None)
+    (connected corr1 main None)
+    (connected main corr2 None)
+    (connected corr2 main None)
+    (connected main corr3 None)
+    (connected corr3 main None)
 
-    (connected Room1 Room3 door2)
-    (connected Room3 Room1 door2)
-    (connected Room1 Corridor1 door1)
-    (connected Corridor1 Room1 door1)
+    (connected main s1 None)
+    (connected s1 main None)
+    (connected main s2 None)
+    (connected s2 main None)
 
-    ;; -- 2nd Floor
-    (connected Corridor2 Corridor3 None)
-    (connected Corridor3 Corridor2 None)
+    (connected main z1 None)
+    (connected z1 main None)
+    (connected main z2 None)
+    (connected z2 main None)
+    (connected main z3 None)
+    (connected z3 main None)
+    (connected main z4 None)
+    (connected z4 main None)
 
-    (connected Room5 Corridor2 door4)
-    (connected Corridor2 Room5 door4)
-    (connected Room6 Corridor2 door3)
-    (connected Corridor2 Room6 door3)
+    (connected main g1 None)
+    (connected g1 main None)
+    (connected main g4 None)
+    (connected g4 main None)
 
-    (connected Room7 Corridor3 door5) 
-    (connected Corridor3 Room7 door5) 
-    (connected Room9 Corridor3 door6) 
-    (connected Corridor3 Room9 door6)
-    (connected Room8 Corridor3 door7)
-    (connected Corridor3 Room8 door7)    
+    (connected main o1 None)
+    (connected o1 main None)
+    (connected main o2 None)
+    (connected o2 main None)
 
-    ;; Elevator
-    (ready Corridor2 elevator)
-    (not-ready Corridor1 elevator)
-    (floor-connection Corridor1 Corridor2 elevator)
-    (floor-connection Corridor2 Corridor1 elevator)
+    (connected main b1 None)
+    (connected b1 main None)
+    (connected main b2 None)
+    (connected b2 main None)
+
+    ;; ;; CORR1
+    (connected corr1 g2 None)
+    (connected g2 corr1 None)
+    (connected corr1 g3 None)
+    (connected g3 corr1 None)
+    (connected corr1 g5 None)
+    (connected g5 corr1 None)
+
+    (connected corr1 o3 None)
+    (connected o3 corr1 None)
+    (connected corr1 o4 None)
+    (connected o4 corr1 None)
+
+    (connected corr1 w1 None)
+    (connected w1 corr1 None)
 )
 
 (:goal 
   (and 
-    (object_at object Room9)
+    (object_at object main)
   )
 )
 )

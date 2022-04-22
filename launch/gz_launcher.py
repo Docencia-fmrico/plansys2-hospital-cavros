@@ -65,7 +65,20 @@ def generate_launch_description():
     description='Full path to the world model file to load')
     
   # Specify the actions
-   
+  move_cmd = Node(
+    package='plansys2_patrol_navigation_example',
+    executable='move_action_node',
+    name='move_action_node',
+    output='screen',
+    parameters=[])
+  
+  pick_cmd = Node(
+        package='plansys2_patrol_navigation_example',
+        executable='pick_object_node',
+        name='pick_object_node',
+        output='screen',
+        parameters=[])
+
   # Start Gazebo server
   start_gazebo_server_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),

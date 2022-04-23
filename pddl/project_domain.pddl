@@ -3,8 +3,6 @@
 
 (:types
     room zone corridor - location
-    door 
-    elevator
     robot
     gripper  
     object
@@ -13,22 +11,13 @@
 (:predicates  
   ;; Locations
   (in ?l1 ?l2 - location)
-  (connected ?l1 ?l2 - location ?d - door)
-
-  ;; Doors
-  (open ?d - door)
-  (close ?d - door)
+  (connected ?l1 ?l2 - location)
 
   ;; Robot
   (robot_at ?r - robot ?l - location)
   (gripper_free ?g - gripper)
   (gripper_at ?g - gripper ?r - robot)
   (robot_carry ?r - robot ?g - gripper ?o - object)
-  
-  ;; Elevator
-  (floor-connection ?l1 ?l2 - location ?e - elevator)
-  (ready ?l - location ?e - elevator)
-  (not-ready ?l - location ?e - elevator)
 
   ;; Object
   (object_at ?o - object ?l - location)
@@ -38,12 +27,11 @@
 
 ;; Movement actions
 (:action move
-  :parameters (?from ?to - location ?door - door ?robot - robot)
+  :parameters (?from ?to - location ?robot - robot)
   :precondition 
     (and 
       (robot_at ?robot ?from)
       (connected ?from ?to ?door)  
-      (open ?door)
     )
   :effect 
     (and 
@@ -77,70 +65,6 @@
     (and 
       (robot_at ?robot ?room)
       (not (robot_at ?robot ?zone))
-    )
-)
-
-;; Door actions
-(:action open-door
-    :parameters (?from ?to - location ?door - door ?robot - robot)
-    :precondition 
-    (and 
-      (robot_at ?robot ?from)
-      (close ?door)
-      (connected ?from ?to ?door)
-    )
-    :effect 
-    (and
-      (open ?door) 
-    )
-)
-
-(:action close-door
-    :parameters (?from ?to - location ?door - door ?robot - robot)
-    :precondition 
-    (and 
-      (robot_at ?robot ?from)
-      (open ?door)
-      (connected ?from ?to ?door)
-    )
-    :effect 
-    (and
-      (close ?door) 
-    )
-)
-
-;; Elevator actions
-(:action take-elevator
-    :parameters (?from ?to - location ?elev - elevator ?robot - robot)
-    :precondition 
-    (and 
-      (robot_at ?robot ?from)
-      (ready ?from ?elev)
-      (not-ready ?to ?elev)
-      (floor-connection ?from ?to ?elev)
-    )
-    :effect 
-    (and
-      (robot_at ?robot ?to)
-      (not (robot_at ?robot ?from))
-      (ready ?to ?elev)
-      (not-ready ?from ?elev)
-    )
-)
-
-(:action wait-elevator
-    :parameters (?from ?to - location ?elev - elevator ?robot - robot)
-    :precondition 
-    (and 
-      (robot_at ?robot ?from)
-      (not-ready ?from ?elev)
-      (ready ?to ?elev)
-      (floor-connection ?from ?to ?elev)
-    )
-    :effect 
-    (and
-      (ready ?from ?elev)
-      (not-ready ?to ?elev)
     )
 )
 

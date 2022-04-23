@@ -79,28 +79,46 @@ def generate_launch_description():
         output='screen',
         parameters=[])
 
+  place_cmd = Node(
+        package='plansys2_patrol_navigation_example',
+        executable='place_object_node',
+        name='place_object_node',
+        output='screen',
+        parameters=[])
+
   # Start Gazebo server
   start_gazebo_server_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
     condition=IfCondition(use_simulator),
     launch_arguments={'world': world}.items())
  
-  # Start Gazebo client    
+  # Start Gazebo client
   start_gazebo_client_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')),
     condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])))
+
+  # Include tiago launcher with hospital world
+  tiago_sim_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'sim.launch.py')))
+  
+  pkg_navigation = FindPackageShare(package='br2_navigation').find('br2_navigation')
+  navigation_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_navigation, 'launch', 'tiago_navigation.launch.py')))
  
   # Create the launch description and populate
   ld = LaunchDescription()
  
+  # Add any actions
+  # ld.add_action(start_gazebo_server_cmd)
+  # ld.add_action(start_gazebo_client_cmd)
+  ld.add_action(tiago_sim_cmd)
+  ld.add_action(navigation_cmd)
+
   # Declare the launch options
   ld.add_action(declare_simulator_cmd)
   ld.add_action(declare_use_sim_time_cmd)
   ld.add_action(declare_use_simulator_cmd)
   ld.add_action(declare_world_cmd)
- 
-  # Add any actions
-  ld.add_action(start_gazebo_server_cmd)
-  ld.add_action(start_gazebo_client_cmd)
+
  
   return ld

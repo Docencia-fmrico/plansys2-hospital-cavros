@@ -41,10 +41,14 @@ ament_target_dependencies(pick_object_node ${dependencies})
 add_executable(place_object_node src/place_object_node.cpp)
 ament_target_dependencies(place_object_node ${dependencies})
 
+add_executable(controller_node src/controller_node.cpp)
+ament_target_dependencies(controller_node ${dependencies})
+
 install(TARGETS
   move_action_node
   pick_object_node
   place_object_node
+  controller_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}

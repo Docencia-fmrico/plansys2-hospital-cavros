@@ -26,7 +26,9 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 def generate_launch_description():
     launch_rmw_dir = get_package_share_directory('br2_navigation')
     nav2_dir = get_package_share_directory('nav2_bringup')
-    pkg_share = get_package_share_directory('plansys2-hospital-cavros')
+
+    my_dir = get_package_share_directory('plansys2-hospital-cavros')
+
 
     params_file = LaunchConfiguration('params_file')
     slam = LaunchConfiguration('slam')
@@ -47,7 +49,7 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(pkg_share, 'maps', 'hospital.yaml'),
+        default_value=os.path.join(my_dir, 'maps', 'hospital.yaml'),
         description='Full path to map yaml file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(

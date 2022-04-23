@@ -20,8 +20,13 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
+
  
 def generate_launch_description():
+
+  project_dir = get_package_share_directory('plansys2-hospital-cavros')
+
  
   # Set the path to the Gazebo ROS package
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
@@ -63,24 +68,32 @@ def generate_launch_description():
     name='world',
     default_value=world_path,
     description='Full path to the world model file to load')
+
+  plansys2_cmd = IncludeLaunchDescription(
+      PythonLaunchDescriptionSource(os.path.join(
+          get_package_share_directory('plansys2_bringup'),
+          'launch',
+          'plansys2_bringup_launch_monolithic.py')),
+      launch_arguments={'model_file': project_dir + '/pddl/project_domain.pddl'}.items()
+      )
     
   # Specify the actions
   move_cmd = Node(
-    package='plansys2_patrol_navigation_example',
+    package='plansys2-hospital-cavros',
     executable='move_action_node',
     name='move_action_node',
     output='screen',
     parameters=[])
   
   pick_cmd = Node(
-        package='plansys2_patrol_navigation_example',
+        package='plansys2-hospital-cavros',
         executable='pick_object_node',
         name='pick_object_node',
         output='screen',
         parameters=[])
 
   place_cmd = Node(
-        package='plansys2_patrol_navigation_example',
+        package='plansys2-hospital-cavros',
         executable='place_object_node',
         name='place_object_node',
         output='screen',
@@ -119,6 +132,9 @@ def generate_launch_description():
   ld.add_action(declare_use_sim_time_cmd)
   ld.add_action(declare_use_simulator_cmd)
   ld.add_action(declare_world_cmd)
+  ld.add_action(plansys2_cmd)
+
+
 
  
   return ld

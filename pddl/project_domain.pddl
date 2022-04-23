@@ -23,15 +23,13 @@
   (object_at ?o - object ?l - location)
 )
 
-(:constants None - door)
-
 ;; Movement actions
 (:action move
   :parameters (?from ?to - location ?robot - robot)
   :precondition 
     (and 
       (robot_at ?robot ?from)
-      (connected ?from ?to ?door)  
+      (connected ?from ?to)  
     )
   :effect 
     (and 

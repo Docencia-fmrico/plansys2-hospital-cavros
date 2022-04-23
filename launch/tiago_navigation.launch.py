@@ -26,7 +26,7 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 def generate_launch_description():
     launch_rmw_dir = get_package_share_directory('br2_navigation')
     nav2_dir = get_package_share_directory('nav2_bringup')
-    pkg_share = FindPackageShare(package='plansys2-hospital-cavros').find('plansys2-hospital-cavros')
+    pkg_share = get_package_share_directory('plansys2-hospital-cavros')
 
     params_file = LaunchConfiguration('params_file')
     slam = LaunchConfiguration('slam')

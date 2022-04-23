@@ -11,7 +11,7 @@
     ;; Initial state
     (robot_at tiago main)
     (gripper_at hand tiago)
-    (gripper_free hand)    
+    (gripper_free hand)
     (object_at object w1)
 
 

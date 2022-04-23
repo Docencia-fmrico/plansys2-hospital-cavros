@@ -1,5 +1,5 @@
 (define (domain project)
-(:requirements :strips :equality :typing)
+(:requirements :strips :equality :typing :durative-actions :fluents)
 
 (:types
     room zone corridor - location
@@ -24,79 +24,84 @@
 )
 
 ;; Movement actions
-(:action move
+(:durative-action move
   :parameters (?from ?to - location ?robot - robot)
-  :precondition 
+  :duration (= ?duration 1)
+  :condition 
     (and 
-      (robot_at ?robot ?from)
-      (connected ?from ?to)  
+      (at start (robot_at ?robot ?from))
+      (at start (connected ?from ?to))
     )
   :effect 
     (and 
-      (robot_at ?robot ?to)
-      (not (robot_at ?robot ?from))
+      (at end (robot_at ?robot ?to))
+      (at start (not (robot_at ?robot ?from)))
     )
 )
 
-(:action move-to-zone
+(:durative-action move-to-zone
   :parameters (?room - room ?zone - zone ?robot - robot)
-  :precondition 
+  :duration (= ?duration 1)
+  :condition 
     (and 
-      (robot_at ?robot ?room)
-      (in ?room ?zone)  
+      (at start (robot_at ?robot ?room))
+      (at start (in ?room ?zone))
     )
   :effect 
     (and 
-      (robot_at ?robot ?zone)
-      (not (robot_at ?robot ?room))
+      (at end (robot_at ?robot ?zone))
+      (at start (not (robot_at ?robot ?room)))
     )
 )
 
-(:action leave-zone
+(:durative-action leave-zone
   :parameters (?room - room ?zone - zone ?robot - robot)
-  :precondition 
+  :duration (= ?duration 1)
+  :condition 
     (and 
-      (robot_at ?robot ?zone)
-      (in ?zone ?room)  
+      (at start (robot_at ?robot ?zone))
+      (at start (in ?zone ?room))
     )
   :effect 
     (and 
-      (robot_at ?robot ?room)
-      (not (robot_at ?robot ?zone))
+      (at end (robot_at ?robot ?room))
+      (at start (not (robot_at ?robot ?zone)))
     )
 )
 
 ;; Object actions
-(:action pick
+(:durative-action pick
   :parameters (?o - object ?l - location ?r - robot ?g - gripper)
-  :precondition 
+  :duration (= ?duration 1)
+  :condition 
     (and
-      (gripper_at ?g ?r)
-      (object_at ?o ?l)
-      (robot_at ?r ?l) 
-      (gripper_free ?g)
+      (at start (gripper_at ?g ?r))
+      (at start (object_at ?o ?l))
+      (at start (robot_at ?r ?l))
+      (at start (gripper_free ?g))
     )
-:effect 
-  (and 
-    (robot_carry ?r ?g ?o) 
-    (not (object_at ?o ?l))
-    (not (gripper_free ?g))
-  )
+  :effect 
+    (and 
+      (at end (robot_carry ?r ?g ?o))
+      (at start (not (object_at ?o ?l)))
+      (at start (not (gripper_free ?g)))
+    )
 )
 
-(:action place
-:parameters (?o - object ?l - location ?r - robot ?g - gripper)
-:precondition 
-  (and 
-    (gripper_at ?g ?r)
-    (robot_at ?r ?l)
-    (robot_carry ?r ?g ?o)
+(:durative-action place
+  :parameters (?o - object ?l - location ?r - robot ?g - gripper)
+  :duration (= ?duration 1)
+  :condition 
+    (and 
+      (at start (gripper_at ?g ?r))
+      (at start (robot_at ?r ?l))
+      (at start (robot_carry ?r ?g ?o))
+    )
+  :effect 
+    (and 
+      (at end (object_at ?o ?l))
+      (at end (gripper_free ?g))
+      (at start (not (robot_carry ?r ?g ?o)))
+    )
   )
-:effect 
-  (and 
-    (object_at ?o ?l)
-    (gripper_free ?g)
-    (not (robot_carry ?r ?g ?o))
-  )
-)
 )

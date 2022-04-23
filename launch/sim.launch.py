@@ -43,6 +43,7 @@ def generate_launch_description():
         default_value='True',
         description='Use simulation (Gazebo) clock if true')
 
+
     ld = LaunchDescription()
 
     ld.add_action(tiago_sim_cmd)

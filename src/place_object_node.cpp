@@ -31,13 +31,13 @@ public:
   Place()
   : plansys2::ActionExecutorClient("place", 1s)
   {
+    progress_ = 0.0;
   }
 
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_activate(const rclcpp_lifecycle::State & previous_state)
   {
-    auto cmd_led_pub_ = this->create_publisher<kobuki_ros_interfaces::msg::Led>("/commands/led1", 10);
-    cmd_led_pub_->on_activate();
+    // cmd_led_pub_->on_activate();
 
     return ActionExecutorClient::on_activate(previous_state);
   }
@@ -45,7 +45,7 @@ public:
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_deactivate(const rclcpp_lifecycle::State & previous_state)
   {
-    cmd_led_pub_->on_deactivate();
+    // cmd_led_pub_->on_deactivate();
 
     return ActionExecutorClient::on_deactivate(previous_state);
   }
@@ -53,13 +53,17 @@ public:
 private:
   void do_work()
   {
-    kobuki_ros_interfaces::msg::Led led;
-    led.value = 0; // off
-    cmd_led_pub_->publish(led);
-    finish(true, 1.0, "object placed");
+    if (progress_ < 1.0) {
+      progress_ += 0.1;
+      send_feedback(progress_, "placing object");
+    }else {
+      finish(true, 1.0, "placing picked");
+      progress_ = 0.0;
+    }
   }
 
-  rclcpp_lifecycle::LifecyclePublisher<kobuki_ros_interfaces::msg::Led>::SharedPtr cmd_led_pub_;
+  // rclcpp_lifecycle::LifecyclePublisher<kobuki_ros_interfaces::msg::Led>::SharedPtr cmd_led_pub_;
+  float progress_;
 };
 
 int main(int argc, char ** argv)

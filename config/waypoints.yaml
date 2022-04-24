@@ -1,6 +1,5 @@
 patrolling_main:
   ros__parameters:
-    waypoints: ["wp2"]
     spawn: [0, 0]
     corr1: [3.25, 16.5]
     corr2: [-5.5, 16.5]

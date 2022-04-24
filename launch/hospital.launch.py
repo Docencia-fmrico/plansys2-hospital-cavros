@@ -27,7 +27,6 @@ def generate_launch_description():
 
   project_dir = get_package_share_directory('plansys2-hospital-cavros')
 
- 
   # Set the path to the Gazebo ROS package
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
    
@@ -41,6 +40,10 @@ def generate_launch_description():
   # Set the path to the SDF model files.
   gazebo_models_path = os.path.join(pkg_share, 'models')
   os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
+
+  # Set path to configuration file
+  config_dir = os.path.join(project_dir, 'config')
+  config_file = os.path.join(config_dir, 'waypoints.yaml')
  
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
   # Launch configuration variables specific to simulation
@@ -83,8 +86,9 @@ def generate_launch_description():
     executable='move_action_node',
     name='move_action_node',
     output='screen',
-    parameters=[])
-  
+    parameters=[config_file])
+   # parameters=[])
+
   pick_cmd = Node(
         package='plansys2-hospital-cavros',
         executable='pick_object_node',
@@ -114,27 +118,17 @@ def generate_launch_description():
   tiago_sim_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'sim.launch.py')))
   
-  pkg_navigation = FindPackageShare(package='br2_navigation').find('br2_navigation')
-  navigation_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(pkg_navigation, 'launch', 'tiago_navigation.launch.py')))
- 
   # Create the launch description and populate
   ld = LaunchDescription()
  
   # Add any actions
-  # ld.add_action(start_gazebo_server_cmd)
-  # ld.add_action(start_gazebo_client_cmd)
   ld.add_action(tiago_sim_cmd)
-  ld.add_action(navigation_cmd)
+  ld.add_action(plansys2_cmd)
 
   # Declare the launch options
   ld.add_action(declare_simulator_cmd)
   ld.add_action(declare_use_sim_time_cmd)
   ld.add_action(declare_use_simulator_cmd)
   ld.add_action(declare_world_cmd)
-  ld.add_action(plansys2_cmd)
-
-
-
- 
+   
   return ld

@@ -40,30 +40,21 @@ public:
     geometry_msgs::msg::PoseStamped wp;
     wp.header.frame_id = "map";
     wp.header.stamp = now();
-    wp.pose.position.x = 0.0;
-    wp.pose.position.y = -2.0;
-    wp.pose.position.z = 0.0;
-    wp.pose.orientation.x = 0.0;
-    wp.pose.orientation.y = 0.0;
-    wp.pose.orientation.z = 0.0;
-    wp.pose.orientation.w = 1.0;
-    waypoints_["wp1"] = wp;
 
-    wp.pose.position.x = 1.8;
-    wp.pose.position.y = 0.0;
-    waypoints_["wp2"] = wp;
-
-    wp.pose.position.x = 0.0;
-    wp.pose.position.y = 2.0;
-    waypoints_["wp3"] = wp;
-
-    wp.pose.position.x = -0.5;
-    wp.pose.position.y = -0.5;
-    waypoints_["wp4"] = wp;
-
-    wp.pose.position.x = -2.0;
-    wp.pose.position.y = -0.4;
-    waypoints_["wp_control"] = wp;
+    std::string rooms[23] = {"spawn", "corr1", "corr2", "corr3", "corr4","s1","s2","z1","z2","z3","z4","o1","o2","o3","o4","g1","g2","g3","g4","g5","b1","b2","w1"};
+    for ( int i = 0; i < 23 ; i++) {
+      node_->declare_parameter(rooms[i]);
+      rclcpp::Parameter wp_param(rooms[i], std::vector<double>({}));
+      node_->get_parameter(rooms[i], wp_param);
+      wp.pose.position.x = wp_param.as_double_array()[0];
+      wp.pose.position.y = wp_param.as_double_array()[1];
+      wp.pose.position.z = 0.0;
+      wp.pose.orientation.x = 0.0;
+      wp.pose.orientation.y = 0.0;
+      wp.pose.orientation.z = 0.0;
+      wp.pose.orientation.w = 1.0;
+      waypoints_[rooms[i]] = wp;
+    }
 
     using namespace std::placeholders;
     pos_sub_ = create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
@@ -138,6 +129,7 @@ private:
   {
   }
 
+  rclcpp::Node::SharedPtr node_;
   std::map<std::string, geometry_msgs::msg::PoseStamped> waypoints_;
 
   using NavigationGoalHandle =

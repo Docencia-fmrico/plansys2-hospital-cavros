@@ -41,13 +41,24 @@ public:
     wp.header.frame_id = "map";
     wp.header.stamp = now();
 
-    std::string rooms[23] = {"spawn", "corr1", "corr2", "corr3", "corr4","s1","s2","z1","z2","z3","z4","o1","o2","o3","o4","g1","g2","g3","g4","g5","b1","b2","w1"};
+    std::string rooms[23] = {"main", "corr1", "corr2", "corr3", "corr4","s1","s2","z1","z2","z3","z4","o1","o2","o3","o4","g1","g2","g3","g4","g5","b1","b2","w1"};
+    
+    std::vector<std::string>
     for ( int i = 0; i < 23 ; i++) {
-      node_->declare_parameter(rooms[i]);
+      std::cout << "1" <<std::endl;
+      this->declare_parameter(rooms[i]);
+      std::cout << "2" <<std::endl;
       rclcpp::Parameter wp_param(rooms[i], std::vector<double>({}));
-      node_->get_parameter(rooms[i], wp_param);
+      std::cout << "3" <<std::endl;
+      this->get_parameter(rooms[i], wp_param);
+      std::cout << "4" <<std::endl;
+      
+      std::cout << wp_param <<std::endl;
       wp.pose.position.x = wp_param.as_double_array()[0];
+      std::cout << "5" <<std::endl;
+      std::cout << wp.pose.position.x <<std::endl;
       wp.pose.position.y = wp_param.as_double_array()[1];
+      std::cout << wp.pose.position.y <<std::endl;
       wp.pose.position.z = 0.0;
       wp.pose.orientation.x = 0.0;
       wp.pose.orientation.y = 0.0;
@@ -55,6 +66,7 @@ public:
       wp.pose.orientation.w = 1.0;
       waypoints_[rooms[i]] = wp;
     }
+    std::cout << "CCCCCCCCCCCCCc" <<std::endl;
 
     using namespace std::placeholders;
     pos_sub_ = create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(

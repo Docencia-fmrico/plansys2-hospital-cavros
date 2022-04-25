@@ -47,6 +47,8 @@ def generate_launch_description():
   # Set path to configuration file
   config_dir = os.path.join(project_dir, 'config')
   config_file = os.path.join(config_dir, 'waypoints.yaml')
+
+
  
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
   # Launch configuration variables specific to simulation
@@ -90,7 +92,7 @@ def generate_launch_description():
     name='move_action_node',
     output='screen',
     parameters=[config_file])
-   # parameters=[])
+    #parameters=[])
 
   pick_cmd = Node(
         package='plansys2-hospital-cavros',
@@ -125,13 +127,18 @@ def generate_launch_description():
   ld = LaunchDescription()
  
   # Add any actions
-  ld.add_action(tiago_sim_cmd)
+  #ld.add_action(tiago_sim_cmd)
   ld.add_action(plansys2_cmd)
 
   # Declare the launch options
-  ld.add_action(declare_simulator_cmd)
-  ld.add_action(declare_use_sim_time_cmd)
-  ld.add_action(declare_use_simulator_cmd)
-  ld.add_action(declare_world_cmd)
+  #ld.add_action(declare_simulator_cmd)
+  #ld.add_action(declare_use_sim_time_cmd)
+  #ld.add_action(declare_use_simulator_cmd)
+  #ld.add_action(declare_world_cmd)
+
+  ld.add_action(move_cmd)
+  ld.add_action(pick_cmd)
+  ld.add_action(place_cmd)
+
    
   return ld

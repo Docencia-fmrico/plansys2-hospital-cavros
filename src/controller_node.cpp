@@ -73,7 +73,6 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"b1", "room"});
     problem_expert_->addInstance(plansys2::Instance{"b2", "room"});
     problem_expert_->addInstance(plansys2::Instance{"w1", "room"});
-    std::cout << "1" << std::endl;
 
 
     problem_expert_->addPredicate(plansys2::Predicate("(robot_at tiago main)"));

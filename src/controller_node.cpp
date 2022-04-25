@@ -37,11 +37,17 @@ public:
 
   void init()
   {
+    std::cout << "startes init" << std::endl;
     domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
+    std::cout << "1" << std::endl;
     planner_client_ = std::make_shared<plansys2::PlannerClient>();
+    std::cout << "2" << std::endl;
     problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
-    executor_client_ = std::make_shared<plansys2::ExecutorClient>();
+    std::cout << "3" << std::endl;
+    //executor_client_ = std::make_shared<plansys2::ExecutorClient>();
+    std::cout << "4" << std::endl;
     init_knowledge();
+    std::cout << "finished init" << std::endl;
   }
 
   void init_knowledge()
@@ -70,6 +76,7 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"b1", "room"});
     problem_expert_->addInstance(plansys2::Instance{"b2", "room"});
     problem_expert_->addInstance(plansys2::Instance{"w1", "room"});
+    std::cout << "1" << std::endl;
 
 
     problem_expert_->addPredicate(plansys2::Predicate("(robot_at tiago main)"));
@@ -126,6 +133,7 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 w1)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected w1 corr1)"));
 
+    std::cout << "finished initialization of instances" << std::endl;
   }
 
   void step()
@@ -135,22 +143,27 @@ public:
         {
           // Set the goal for next state
           problem_expert_->setGoal(plansys2::Goal("(and(object_at object w1))"));
+          std::cout << "goal setteled" << std::endl;
 
           // Compute the plan
           auto domain = domain_expert_->getDomain();
           auto problem = problem_expert_->getProblem();
           auto plan = planner_client_->getPlan(domain, problem);
+          std::cout << "plan computed" << std::endl;
 
           if (!plan.has_value()) {
             std::cout << "Could not find plan to reach goal " <<
               parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
             break;
           }
+          std::cout << "we have a plan" << std::endl;
 
           // Execute the plan
           if (executor_client_->start_plan_execution(plan.value())) {
+            std::cout << "started executing" << std::endl;
             state_ = PATROL_WP1;
           }
+          
         }
         break;
       case PATROL_WP1:
@@ -168,26 +181,29 @@ public:
               std::cout << "Successful finished " << std::endl;
 
               // Cleanning up
-              problem_expert_->removePredicate(plansys2::Predicate("(patrolled wp1)"));
+              problem_expert_->removePredicate(plansys2::Predicate("(and(object_at object w1))"));
 
-              // Set the goal for next state
-              problem_expert_->setGoal(plansys2::Goal("(and(patrolled wp2))"));
+              // // Set the goal for next state
+              // problem_expert_->setGoal(plansys2::Goal("(and(patrolled wp2))"));
 
-              // Compute the plan
-              auto domain = domain_expert_->getDomain();
-              auto problem = problem_expert_->getProblem();
-              auto plan = planner_client_->getPlan(domain, problem);
+              // // Compute the plan
+              // auto domain = domain_expert_->getDomain();
+              // auto problem = problem_expert_->getProblem();
+              // auto plan = planner_client_->getPlan(domain, problem);
 
-              if (!plan.has_value()) {
-                std::cout << "Could not find plan to reach goal " <<
-                  parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
-                break;
-              }
+              // if (!plan.has_value()) {
+              //   std::cout << "Could not find plan to reach goal " <<
+              //     parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
+              //   break;
+              // }
 
-              // Execute the plan
-              if (executor_client_->start_plan_execution(plan.value())) {
-                state_ = PATROL_WP2;
-              }
+              // // Execute the plan
+              // if (executor_client_->start_plan_execution(plan.value())) {
+              //   state_ = PATROL_WP2;
+              // }
+
+              std::cout<< "FINISHED PLAANNNN!!" << std::endl;
+
             } else {
               for (const auto & action_feedback : feedback.action_execution_status) {
                 if (action_feedback.status == plansys2_msgs::msg::ActionExecutionInfo::FAILED) {
@@ -220,7 +236,7 @@ public:
   }
 
 private:
-  typedef enum {STARTING, PATROL_WP1, PATROL_WP2, PATROL_WP3, PATROL_WP4} StateType;
+  typedef enum {STARTING, PATROL_WP1} StateType;
   StateType state_;
 
   std::shared_ptr<plansys2::DomainExpertClient> domain_expert_;

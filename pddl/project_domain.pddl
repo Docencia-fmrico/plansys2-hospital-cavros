@@ -1,5 +1,5 @@
 (define (domain project)
-(:requirements :strips :equality :typing :durative-actions :fluents)
+(:requirements :strips :typing :adl :fluents :durative-actions :equality  )
 
 (:types
     room zone corridor - location
@@ -26,7 +26,7 @@
 ;; Movement actions
 (:durative-action move
   :parameters (?from ?to - location ?robot - robot)
-  :duration (= ?duration 1)
+  :duration (= ?duration 5)
   :condition 
     (and 
       (at start (robot_at ?robot ?from))
@@ -41,7 +41,7 @@
 
 (:durative-action move-to-zone
   :parameters (?room - room ?zone - zone ?robot - robot)
-  :duration (= ?duration 1)
+  :duration (= ?duration 5)
   :condition 
     (and 
       (at start (robot_at ?robot ?room))
@@ -56,7 +56,7 @@
 
 (:durative-action leave-zone
   :parameters (?room - room ?zone - zone ?robot - robot)
-  :duration (= ?duration 1)
+  :duration (= ?duration 5)
   :condition 
     (and 
       (at start (robot_at ?robot ?zone))
@@ -104,4 +104,5 @@
       (at start (not (robot_carry ?r ?g ?o)))
     )
   )
-)
+
+) ;; end Domain ;;

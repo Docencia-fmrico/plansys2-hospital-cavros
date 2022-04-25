@@ -29,6 +29,9 @@ def generate_launch_description():
 
   # Set the path to the Gazebo ROS package
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
+
+  # path to br2_tiago directory
+  br2_tiago = FindPackageShare(package='br2_tiago').find('br2_tiago')
    
   # Set the path to this package.
   pkg_share = FindPackageShare(package='plansys2-hospital-cavros').find('plansys2-hospital-cavros')
@@ -73,12 +76,12 @@ def generate_launch_description():
     description='Full path to the world model file to load')
 
   plansys2_cmd = IncludeLaunchDescription(
-      PythonLaunchDescriptionSource(os.path.join(
-          get_package_share_directory('plansys2_bringup'),
-          'launch',
-          'plansys2_bringup_launch_monolithic.py')),
-      launch_arguments={'model_file': project_dir + '/pddl/project_domain.pddl'}.items()
-      )
+        PythonLaunchDescriptionSource(os.path.join(
+            get_package_share_directory('plansys2_bringup'),
+            'launch',
+            'plansys2_bringup_launch_monolithic.py')),
+        launch_arguments={
+          'model_file': pkg_share + '/pddl/project_domain.pddl' }.items())
     
   # Specify the actions
   move_cmd = Node(
@@ -116,7 +119,7 @@ def generate_launch_description():
 
   # Include tiago launcher with hospital world
   tiago_sim_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'sim.launch.py')))
+        PythonLaunchDescriptionSource(os.path.join(br2_tiago, 'launch', 'sim.launch.py')))
   
   # Create the launch description and populate
   ld = LaunchDescription()

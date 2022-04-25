@@ -37,15 +37,10 @@ public:
 
   void init()
   {
-    std::cout << "startes init" << std::endl;
     domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
-    std::cout << "1" << std::endl;
     planner_client_ = std::make_shared<plansys2::PlannerClient>();
-    std::cout << "2" << std::endl;
     problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
-    std::cout << "3" << std::endl;
-    //executor_client_ = std::make_shared<plansys2::ExecutorClient>();
-    std::cout << "4" << std::endl;
+    executor_client_ = std::make_shared<plansys2::ExecutorClient>();
     init_knowledge();
     std::cout << "finished init" << std::endl;
   }

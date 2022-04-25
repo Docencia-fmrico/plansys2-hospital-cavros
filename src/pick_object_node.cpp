@@ -21,7 +21,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "lifecycle_msgs/msg/state.hpp"
-#include "kobuki_ros_interfaces/msg/led.hpp"
 
 using namespace std::chrono_literals;
 

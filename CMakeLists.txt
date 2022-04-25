@@ -17,7 +17,6 @@ find_package(plansys2_executor REQUIRED)
 find_package(plansys2_planner REQUIRED)
 find_package(plansys2_problem_expert REQUIRED)
 find_package(plansys2_pddl_parser REQUIRED)
-find_package(kobuki_ros_interfaces REQUIRED)
 
 set(dependencies
     rclcpp
@@ -29,7 +28,6 @@ set(dependencies
     plansys2_planner
     plansys2_problem_expert
     plansys2_pddl_parser
-    kobuki_ros_interfaces
 )
 
 add_executable(move_action_node src/move_action_node.cpp)
@@ -55,7 +53,7 @@ install(TARGETS
 )
 
 # Se deben instalar los directorios
-install(DIRECTORY launch models worlds
+install(DIRECTORY launch models worlds pddl
     DESTINATION share/${PROJECT_NAME}
 )
 

@@ -60,6 +60,18 @@ Las acciones empleadas son las siguientes:
 - place, para dejar el objeto en una localización.
 
 ## PlanSys2
+Para conseguir que nuestro robot realice estas acciones empleamos plansys2 con ros2.
+
+Por un lado tenemos las acciones de nuestro problema : move , pick y place implementadas como nodos que heredan ActionExecutorClient.
+
+Las acciones pick y place tiene una implementación sencilla , en la que una variable de progreso simulará el tiempo que estas acciones tardan en ejecutarse ( ya que el robot no cogerá realmente ningun objeto del escenario). Cuando esta variable llega al 100% la acción se dará por terminado y se pasará a la siguiente.
+
+La acción move crea un cliente de navegación. Cuando se activa este nodo, el cliente establece el goal al que quiere ir va devolviendo un feedback en relación a la distancia a la que se encuentra de dicho goal.
+
+Para poder comandar a plansys2 la ejecución de un plan hemos creado un controlador : controller_node. En este definimos el estado inicial y el goal del problema.
+
+Por tanto ejecutando nuestro escenario con tiago , la navegación nav2 con el mismo , nuestro hospital.launch.py que lanza plansys2 y finalmente el controlador veremos como poco a poco el plan se va ejecutando por el robot .
+
 
 ## Contribuidores
 * Rubén Montilla Fernández

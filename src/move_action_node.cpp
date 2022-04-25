@@ -42,8 +42,15 @@ public:
     wp.header.stamp = now();
 
     std::string rooms[23] = {"main", "corr1", "corr2", "corr3", "corr4","s1","s2","z1","z2","z3","z4","o1","o2","o3","o4","g1","g2","g3","g4","g5","b1","b2","w1"};
-    
-    std::vector<std::string>
+    /*
+    //this->declare_parameter("main");
+    rclcpp::Parameter wp_param("main", std::vector<double>({}));
+    this->get_parameter("main", wp_param);
+    std::cout << wp_param <<std::endl;
+
+    //std::vector<std::string>
+    */
+   /*
     for ( int i = 0; i < 23 ; i++) {
       std::cout << "1" <<std::endl;
       this->declare_parameter(rooms[i]);
@@ -53,7 +60,9 @@ public:
       this->get_parameter(rooms[i], wp_param);
       std::cout << "4" <<std::endl;
       
+      std::vector<double> wp_array = wp_param.as_double_array();
       std::cout << wp_param <<std::endl;
+
       wp.pose.position.x = wp_param.as_double_array()[0];
       std::cout << "5" <<std::endl;
       std::cout << wp.pose.position.x <<std::endl;
@@ -66,7 +75,24 @@ public:
       wp.pose.orientation.w = 1.0;
       waypoints_[rooms[i]] = wp;
     }
-    std::cout << "CCCCCCCCCCCCCc" <<std::endl;
+    */
+
+    wp.pose.position.x = 0.0;
+      wp.pose.position.y = 0.0;
+      wp.pose.position.z = 0.0;
+      wp.pose.orientation.x = 0.0;
+      wp.pose.orientation.y = 0.0;
+      wp.pose.orientation.z = 0.0;
+      wp.pose.orientation.w = 1.0;
+      waypoints_["main"] = wp;
+    
+      wp.pose.position.x = -9.2;
+      wp.pose.position.y =  -6.54;
+      waypoints_["g4"] = wp;
+
+      wp.pose.position.x =-2.51;
+      wp.pose.position.y = -4.61 ; 
+      waypoints_["o2"] = wp;
 
     using namespace std::placeholders;
     pos_sub_ = create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
@@ -100,7 +126,7 @@ public:
 
     RCLCPP_INFO(get_logger(), "Navigation action server ready");
 
-    auto wp_to_navigate = get_arguments()[2];  // The goal is in the 3rd argument of the action
+    auto wp_to_navigate = get_arguments()[1];  // The goal is in the 3rd argument of the action
     RCLCPP_INFO(get_logger(), "Start navigation to [%s]", wp_to_navigate.c_str());
 
     goal_pos_ = waypoints_[wp_to_navigate];

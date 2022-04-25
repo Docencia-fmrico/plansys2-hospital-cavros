@@ -53,6 +53,8 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"corr1", "corridor"});
     problem_expert_->addInstance(plansys2::Instance{"corr2", "corridor"});
     problem_expert_->addInstance(plansys2::Instance{"corr3", "corridor"});
+    problem_expert_->addInstance(plansys2::Instance{"corr4", "corridor"});
+    problem_expert_->addInstance(plansys2::Instance{"main", "room"});
     problem_expert_->addInstance(plansys2::Instance{"s1", "room"});
     problem_expert_->addInstance(plansys2::Instance{"s2", "room"});
     problem_expert_->addInstance(plansys2::Instance{"z1", "room"});
@@ -84,6 +86,8 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected corr2 main)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected main corr3)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected corr3 main)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected main corr4)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr4 main)"));
 
     problem_expert_->addPredicate(plansys2::Predicate("(connected main s1)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected s1 main)"));
@@ -114,19 +118,19 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(connected main b2)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected b2 main)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 g2)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected g2 corr1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 g3)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected g3 corr1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 g5)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected g5 corr1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr3 g2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected g2 corr3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr3 g3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected g3 corr3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr3 o3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected o3 corr3)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 o3)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected o3 corr1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 o4)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected o4 corr1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 w1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected w1 corr1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr4 g5)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected g5 corr4)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr4 o4)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected o4 corr4)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corr4 w1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected w1 corr4)"));
 
     std::cout << "finished initialization of instances" << std::endl;
   }
@@ -137,7 +141,7 @@ public:
       case STARTING:
         {
           // Set the goal for next state
-          problem_expert_->setGoal(plansys2::Goal("(and(object_at object w1))"));
+          problem_expert_->setGoal(plansys2::Goal("(and(object_at object main))"));
           std::cout << "goal setteled" << std::endl;
 
           // Compute the plan

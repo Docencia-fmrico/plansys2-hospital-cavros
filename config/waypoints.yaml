@@ -1,6 +1,6 @@
 patrolling_main:
   ros__parameters:
-    spawn: [0, 0]
+    main: [0, 0]
     corr1: [3.25, 16.5]
     corr2: [-5.5, 16.5]
     corr3: [4 , -12.5]

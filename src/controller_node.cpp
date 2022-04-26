@@ -78,7 +78,7 @@ public:
     problem_expert_->addPredicate(plansys2::Predicate("(robot_at tiago main)"));
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_at hand tiago)"));
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_free hand)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(object_at object w1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at object s1)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected main corr1)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected corr1 main)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected main corr2)"));

@@ -41,20 +41,12 @@ public:
     wp.header.frame_id = "map";
     wp.header.stamp = now();
 
-    std::string rooms[23] = {"main", "corr1", "corr2", "corr3", "corr4","s1","s2","z1","z2","z3","z4","o1","o2","o3","o4","g1","g2","g3","g4","g5","b1","b2","w1"};
-    /*
-    //this->declare_parameter("main");
-    rclcpp::Parameter wp_param("main", std::vector<double>({}));
-    this->get_parameter("main", wp_param);
-    std::cout << wp_param <<std::endl;
-
-    //std::vector<std::string>
-    */
-   /*
+    std::vector<std::string> rooms = {"main", "corr1", "corr2", "corr3", "corr4","s1","s2","z1","z2","z3","z4","o1","o2","o3","o4","g1","g2","g3","g4","g5","b1","b2","w1"};
+   
     for ( int i = 0; i < 23 ; i++) {
       std::cout << "1" <<std::endl;
       this->declare_parameter(rooms[i]);
-      std::cout << "2" <<std::endl;
+      std::cout << rooms[22] <<std::endl;
       rclcpp::Parameter wp_param(rooms[i], std::vector<double>({}));
       std::cout << "3" <<std::endl;
       this->get_parameter(rooms[i], wp_param);
@@ -75,24 +67,6 @@ public:
       wp.pose.orientation.w = 1.0;
       waypoints_[rooms[i]] = wp;
     }
-    */
-
-    wp.pose.position.x = 0.0;
-      wp.pose.position.y = 0.0;
-      wp.pose.position.z = 0.0;
-      wp.pose.orientation.x = 0.0;
-      wp.pose.orientation.y = 0.0;
-      wp.pose.orientation.z = 0.0;
-      wp.pose.orientation.w = 1.0;
-      waypoints_["main"] = wp;
-    
-      wp.pose.position.x = -9.2;
-      wp.pose.position.y =  -6.54;
-      waypoints_["g4"] = wp;
-
-      wp.pose.position.x =-2.51;
-      wp.pose.position.y = -4.61 ; 
-      waypoints_["o2"] = wp;
 
     using namespace std::placeholders;
     pos_sub_ = create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(

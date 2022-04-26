@@ -1,4 +1,4 @@
-patrolling_main:
+move_action_node:
   ros__parameters:
     main: [0, 0]
     corr1: [3.25, 16.5]
